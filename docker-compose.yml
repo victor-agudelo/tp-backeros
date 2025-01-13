@@ -1,0 +1,95 @@
+services:
+  usuarios_app:
+    build:
+      context: ./usuarios
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./usuarios/.env
+    depends_on:
+      - usuarios_db
+    container_name: usuarios_app
+    networks:
+      - app_network
+
+  usuarios_db:
+    image: mysql:8.0
+    container_name: usuarios_db
+    volumes:
+      - mysql_data_usuarios:/var/lib/mysql
+    env_file:
+      - ./usuarios/.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - app_network
+
+  plazoleta_app:
+    build:
+      context: ./plazoleta
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8002"
+    env_file:
+      - ./plazoleta/.env
+    depends_on:
+      - plazoleta_db
+      - usuarios_app
+      - trazabilidad_app
+    container_name: plazoleta_app
+    networks:
+      - app_network
+
+  plazoleta_db:
+    image: mysql:8.0
+    container_name: plazoleta_db
+    volumes:
+      - mysql_data_plazoleta:/var/lib/mysql
+    env_file:
+      - ./plazoleta/.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - app_network
+
+  trazabilidad_app:
+    build:
+      context: ./trazabilidad
+      dockerfile: Dockerfile
+    ports:
+      - "8003:8003"
+    env_file:
+      - ./trazabilidad/.env
+    depends_on:
+      - trazabilidad_db
+    container_name: trazabilidad_app
+    networks:
+      - app_network
+
+  trazabilidad_db:
+    image: mongo:6.0
+    container_name: trazabilidad_db
+    ports:
+      - "27017:27017"
+    env_file:
+      - ./trazabilidad/.env
+    volumes:
+      - mongo_data_trazabilidad:/data/db
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  mysql_data_usuarios:
+  mysql_data_plazoleta:
+  mongo_data_trazabilidad:
