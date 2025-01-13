@@ -22,7 +22,6 @@ class ClientRepository:
         result = await self.db.execute(stmt)
         return result.scalars().first()
 
-
     async def current_client(self, payload, db: AsyncSession = Depends(get_db_session)):
         stmt = select(Clientes).where(Clientes.correo == payload['correo'])
         result = await db.execute(stmt)

@@ -5,7 +5,6 @@ from pydantic import BaseModel, model_validator
 from utils.email_validator import check_email
 
 
-
 class ClientBase(BaseModel):
     Nombre: str
     Apellido: str

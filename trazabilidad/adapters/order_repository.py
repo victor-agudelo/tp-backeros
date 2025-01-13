@@ -14,7 +14,7 @@ class OrderRepository:
 
         return order.pedido_id
 
-    async def get_orders(self, restaurant_id, page: int = 1, page_size: int = 10, order = "pedidoRealizadoTimestamp"):
+    async def get_orders(self, restaurant_id, page: int = 1, page_size: int = 10, order="pedidoRealizadoTimestamp"):
         query = {"restaurante_id": restaurant_id}
 
         fields = {
@@ -33,7 +33,8 @@ class OrderRepository:
                         "if": {"$and": ["$pedidoRealizadoTimestamp", "$pedidoListoTimestamp"]},
                         "then": {
                             "$divide": [
-                                {"$subtract": ["$pedidoListoTimestamp", "$pedidoRealizadoTimestamp"]},
+                                {"$subtract": [
+                                    "$pedidoListoTimestamp", "$pedidoRealizadoTimestamp"]},
                                 1000 * 60
                             ]
                         },
@@ -54,13 +55,13 @@ class OrderRepository:
 
         return paginated_result
 
-    async def get_employees_rates(self, restaurant_id, page: int = 1, page_size: int = 10, order = "pedidoRealizadoTimestamp"):
+    async def get_employees_rates(self, restaurant_id, page: int = 1, page_size: int = 10, order="pedidoRealizadoTimestamp"):
         query = {
             "restaurante_id": restaurant_id,
             "pedidoRealizadoTimestamp": {"$ne": None},
             "pedidoListoTimestamp": {"$ne": None},
             "empleadoAsignado": {"$ne": None}
-            }
+        }
 
         add_fields = {
             "$addFields": {
@@ -69,7 +70,8 @@ class OrderRepository:
                         "if": {"$and": ["$pedidoRealizadoTimestamp", "$pedidoListoTimestamp"]},
                         "then": {
                             "$divide": [
-                                {"$subtract": ["$pedidoListoTimestamp", "$pedidoRealizadoTimestamp"]},
+                                {"$subtract": [
+                                    "$pedidoListoTimestamp", "$pedidoRealizadoTimestamp"]},
                                 1000 * 60
                             ]
                         },
@@ -80,10 +82,10 @@ class OrderRepository:
         }
 
         group_by = {
-                "_id": "$empleadoAsignado",
-                "tiempoMedio": {"$avg": "$duracionPreparacion"},
-                "totalPedidos": {"$sum": 1}
-            }
+            "_id": "$empleadoAsignado",
+            "tiempoMedio": {"$avg": "$duracionPreparacion"},
+            "totalPedidos": {"$sum": 1}
+        }
 
         paginated_result = await self.paginator.paginate_query(
             query=query,
@@ -96,7 +98,7 @@ class OrderRepository:
 
         return paginated_result
 
-    async def get_orders_by_status(self, restaurant_id, status, page: int = 1, page_size: int = 10, order = "pedidoRealizadoTimestamp"):
+    async def get_orders_by_status(self, restaurant_id, status, page: int = 1, page_size: int = 10, order="pedidoRealizadoTimestamp"):
         query = {"restaurante_id": restaurant_id, "estado": status}
 
         paginated_result = await self.paginator.paginate_query(
@@ -106,7 +108,8 @@ class OrderRepository:
             order=order
         )
 
-        paginated_result["items"] = [Pedido(**item) for item in paginated_result["items"]]
+        paginated_result["items"] = [
+            Pedido(**item) for item in paginated_result["items"]]
 
         return paginated_result
 
@@ -122,7 +125,7 @@ class OrderRepository:
 
         return await self.order_collection.find_one(query)
 
-    async def update_order(self, orderId, estado, empleado = None):
+    async def update_order(self, orderId, estado, empleado=None):
 
         if estado == "Listo":
             update_fields = {

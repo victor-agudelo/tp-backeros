@@ -36,7 +36,8 @@ class FulllOrder(OrderBase):
     @model_validator(mode="after")
     def validate_order_date(self):
         try:
-            datetime.strptime(self.pedidoRealizadoTimestamp, "%Y-%m-%d %H:%M:%S")
+            datetime.strptime(self.pedidoRealizadoTimestamp,
+                              "%Y-%m-%d %H:%M:%S")
             return self
         except:
             raise ValueError("Fecha no valida")
