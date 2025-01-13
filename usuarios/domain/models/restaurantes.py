@@ -9,7 +9,8 @@ from domain.models.platos import Platos
 class Restaurantes(database_conn.base):
     __tablename__ = "restaurants"
 
-    idRestaurante = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    idRestaurante = Column(Integer, primary_key=True,
+                           autoincrement=True, nullable=False)
     Nombre = Column(String(50), nullable=False)
     NIT = Column(Integer, nullable=False)
     Direccion = Column(String(100), nullable=False)

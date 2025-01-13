@@ -25,7 +25,7 @@ class OrderServices:
                 "page_size": page_size
             }
 
-            headers={"accept": "application/json"}
+            headers = {"accept": "application/json"}
 
             async with httpx.AsyncClient() as client:
                 response = await client.get(FULL_URL, params=params, headers=headers)
@@ -37,12 +37,14 @@ class OrderServices:
                 )
             final_response = response.json()
             if final_response["restaurants"]:
-                final_response["restaurants"] = [ClientRestaurant(**restaurant) for restaurant in final_response["restaurants"]]
+                final_response["restaurants"] = [ClientRestaurant(
+                    **restaurant) for restaurant in final_response["restaurants"]]
 
             return final_response
 
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error al obtener los restaurantes: {e}")
+            raise InvalidRequest(
+                status_code=500, detail=f"Error al obtener los restaurantes: {e}")
 
     async def get_active_dishes(self, owner_id, page: int = 1, page_size: int = 10, category=None):
         try:
@@ -73,8 +75,8 @@ class OrderServices:
                 )
             return response.json()
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error al obtener los platos del restaurante: {e}")
-
+            raise InvalidRequest(
+                status_code=500, detail=f"Error al obtener los platos del restaurante: {e}")
 
     async def get_order(self, order_id, client_id):
         try:
@@ -95,15 +97,15 @@ class OrderServices:
             return response.json()
 
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error al obtener la información de la orden: {e}")
-
-
+            raise InvalidRequest(
+                status_code=500, detail=f"Error al obtener la información de la orden: {e}")
 
     async def post_new_order(self, new_order, client):
         active_orders = await self.__get_active_orders(client.idCliente)
 
         if active_orders and active_orders["estado"] == "Pendiente":
-            raise InvalidRequest(status_code=400, detail=f"Hay ordenes activas en el momento")
+            raise InvalidRequest(
+                status_code=400, detail=f"Hay ordenes activas en el momento")
 
         full_new_order = FulllOrder(
             **new_order.__dict__,
@@ -131,16 +133,18 @@ class OrderServices:
                     detail=f"Error al enviar el pedido al restaurante: {response.content}"
                 )
 
-            return response.text#"Pedido enviado"
+            return response.text  # "Pedido enviado"
 
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error de conexion: {e}")
+            raise InvalidRequest(
+                status_code=500, detail=f"Error de conexion: {e}")
 
     async def cancel_order(self, order_id, client):
         pending_orders = await self.__get_active_orders(client.idCliente)
 
         if not pending_orders:
-            raise InvalidRequest(status_code=400, detail=f"Lo sentimos, tu pedido ya está en preparación y no puede cancelarse")
+            raise InvalidRequest(
+                status_code=400, detail=f"Lo sentimos, tu pedido ya está en preparación y no puede cancelarse")
 
         if pending_orders.get("pedido_id") != order_id:
             raise InvalidRequest(status_code=400,
@@ -164,7 +168,8 @@ class OrderServices:
             return "Orden cancelada"
 
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error de conexion: {e}")
+            raise InvalidRequest(
+                status_code=500, detail=f"Error de conexion: {e}")
 
     async def __get_active_orders(self, client_id, estado="Pendiente"):
         try:
@@ -179,7 +184,6 @@ class OrderServices:
                 "estado": estado
             }
 
-
             async with httpx.AsyncClient() as client:
                 response = await client.get(FULL_URL, headers=headers, params=params)
 
@@ -192,4 +196,5 @@ class OrderServices:
             return json.loads(response.text)
 
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error de conexion: {e}")
+            raise InvalidRequest(
+                status_code=500, detail=f"Error de conexion: {e}")

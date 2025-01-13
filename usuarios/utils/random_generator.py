@@ -2,7 +2,7 @@ import random
 
 
 class CodeGenerator:
-    def __init__(self, code_longitude = 4):
+    def __init__(self, code_longitude=4):
         self.code_longitude = code_longitude
         self.code = ""
 
@@ -13,5 +13,6 @@ class CodeGenerator:
         self.code = "".join((str(char) for char in code))
 
         return self.code
+
 
 combination = CodeGenerator()

@@ -15,6 +15,7 @@ orders_router = APIRouter(
     responses={404: {"description": "Not found"}}
 )
 
+
 async def get_db_session() -> AsyncSession:
     async for session in database_conn.get_db():
         yield session
@@ -29,6 +30,7 @@ async def get_all_restaurants(
     order_services = OrderServices()
 
     return await order_services.get_all_restaurants(page, page_size)
+
 
 @orders_router.get('/platos-activos/{idRestaurante}')
 async def get_active_dishes(

@@ -14,6 +14,7 @@ clients_router = APIRouter(
     responses={404: {"description": "Not found"}}
 )
 
+
 async def get_db_session() -> AsyncSession:
     async for session in database_conn.get_db():
         yield session

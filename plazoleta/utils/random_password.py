@@ -2,10 +2,12 @@ import string
 import random
 import secrets
 
+
 class PasswordGenerator:
-    def __init__(self, password_longitude = 12):
+    def __init__(self, password_longitude=12):
         self.password_longitude = password_longitude
-        self.possible_characters = string.ascii_letters + string.digits + string.punctuation
+        self.possible_characters = string.ascii_letters + \
+            string.digits + string.punctuation
         self.password = ""
 
     def create_new_password(self):

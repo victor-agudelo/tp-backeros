@@ -12,14 +12,14 @@ class ClientServices:
         self.db = db
         self.client_repository = ClientRepository(db)
 
-
     async def create_client(self, client):
         old_client = await self.client_repository.client_by_email(client.correo)
 
         if old_client:
-            raise InvalidRequest(status_code=400, detail="El cliente ya existe")
+            raise InvalidRequest(
+                status_code=400, detail="El cliente ya existe")
 
-        client_password = "1" #password_generator.create_new_password()
+        client_password = "1"  # password_generator.create_new_password()
 
         new_client = FullClientCreation(
             **client.__dict__,

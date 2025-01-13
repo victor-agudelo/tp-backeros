@@ -23,7 +23,8 @@ class RestaurantRepository:
         await self.db.commit()
 
     async def get_all_restaurants(self, page: int = 1, page_size: int = 10):
-        stmt = select(Restaurantes).where(Restaurantes.estado == True).order_by(Restaurantes.Nombre)
+        stmt = select(Restaurantes).where(Restaurantes.estado ==
+                                          True).order_by(Restaurantes.Nombre)
         return await self.paginator.paginate_query(
             query=stmt,
             page=page,

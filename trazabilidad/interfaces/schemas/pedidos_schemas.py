@@ -46,7 +46,8 @@ class FulllOrder(OrderBase):
             if isinstance(self.pedidoRealizadoTimestamp, datetime):
                 return self
             else:
-                self.pedidoRealizadoTimestamp = datetime.strptime(self.pedidoRealizadoTimestamp, "%Y-%m-%d %H:%M:%S")
+                self.pedidoRealizadoTimestamp = datetime.strptime(
+                    self.pedidoRealizadoTimestamp, "%Y-%m-%d %H:%M:%S")
                 return self
         except:
             raise ValueError("Fecha no valida")
@@ -56,6 +57,7 @@ class FinalOrder(FulllOrder):
     pedidoEnPreparacionTimestamp: str | datetime | None
     pedidoListoTimestamp: str | datetime | None
     entregado: bool
+
 
 class OrderResponse(BaseModel):
     message: str

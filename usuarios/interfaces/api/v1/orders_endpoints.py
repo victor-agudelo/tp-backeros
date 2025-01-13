@@ -13,6 +13,7 @@ orders_router = APIRouter(
     responses={404: {"description": "Not found"}}
 )
 
+
 async def get_db_session() -> AsyncSession:
     async for session in database_conn.get_db():
         yield session
@@ -48,6 +49,7 @@ async def finish_order(
     order_services = OrderServices()
 
     return await order_services.finish_order(pedidoId)
+
 
 @orders_router.patch('/deliver-order/{pedidoId}')
 async def deliver_order(

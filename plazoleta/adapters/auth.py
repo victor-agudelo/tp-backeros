@@ -17,10 +17,10 @@ from config.app_settings import app_settings
 
 load_dotenv(find_dotenv())
 
+
 async def get_db_session() -> AsyncSession:
     async for session in database_conn.get_db():
         yield session
-
 
 
 class Auth:
@@ -34,7 +34,6 @@ class Auth:
         stmt = select(Clientes).where(Clientes.correo == email)
         result = await self.db.execute(stmt)
         return result.scalars().first()
-
 
     async def authenticate(
             self,
@@ -69,7 +68,8 @@ class Auth:
 
     @staticmethod
     async def get_current_user(
-            token: str = Depends(OAuth2PasswordBearer(tokenUrl=os.getenv("TOKEN_URL_V1"))),
+            token: str = Depends(OAuth2PasswordBearer(
+                tokenUrl=os.getenv("TOKEN_URL_V1"))),
             db: AsyncSession = Depends(get_db_session)
 
     ):
@@ -86,4 +86,5 @@ class Auth:
             return FullClient(**scalar_result.__dict__)
         except Exception as e:
             print(e)
-            raise InvalidRequest(status_code=401, detail='Credenciales invalidas')
+            raise InvalidRequest(
+                status_code=401, detail='Credenciales invalidas')

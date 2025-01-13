@@ -6,12 +6,12 @@ import httpx
 from exceptions.exception_handler import InvalidRequest
 
 
-
 class DashboardServices:
 
     async def get_all_orders(self, page, page_size, user):
         if user.rol != "propietario":
-            raise InvalidRequest(status_code=401, detail="No tiene permisos para ver los datos")
+            raise InvalidRequest(
+                status_code=401, detail="No tiene permisos para ver los datos")
 
         try:
             BASE_URL = os.getenv("API_TRAZABILIDAD")
@@ -36,11 +36,13 @@ class DashboardServices:
             return json.loads(response.text)
 
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error al realizar la conexion: {e}")
+            raise InvalidRequest(
+                status_code=500, detail=f"Error al realizar la conexion: {e}")
 
     async def get_employee_sumary(self, page, page_size, user):
         if user.rol != "propietario":
-            raise InvalidRequest(status_code=401, detail="No tiene permisos para ver los datos")
+            raise InvalidRequest(
+                status_code=401, detail="No tiene permisos para ver los datos")
 
         try:
             BASE_URL = os.getenv("API_TRAZABILIDAD")
@@ -65,4 +67,5 @@ class DashboardServices:
             return json.loads(response.text)
 
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error al realizar la conexion: {e}")
+            raise InvalidRequest(
+                status_code=500, detail=f"Error al realizar la conexion: {e}")

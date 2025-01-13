@@ -15,6 +15,7 @@ restaurants_router = APIRouter(
     responses={404: {"description": "Not found"}}
 )
 
+
 async def get_db_session() -> AsyncSession:
     async for session in database_conn.get_db():
         yield session
@@ -28,8 +29,8 @@ async def create_restaurant(
 ):
     restaurant_services = RestaurantServices(db)
 
-
     return await restaurant_services.create_restaurant(user, new_restaurant)
+
 
 @restaurants_router.get('/all-restaurants')
 async def get_all_restaurants(

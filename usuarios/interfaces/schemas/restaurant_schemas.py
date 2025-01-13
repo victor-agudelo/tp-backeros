@@ -5,9 +5,6 @@ class RestaurantBase(BaseModel):
     Nombre: str
 
 
-
-
-
 class CreateRestaurant(RestaurantBase):
     NIT: int
     Direccion: str
@@ -44,6 +41,7 @@ class CreateRestaurant(RestaurantBase):
         if self.Nombre.isdigit():
             raise ValueError("Nombre invalido")
         return self
+
 
 class FullRestaurant(CreateRestaurant):
     idRestaurante: int

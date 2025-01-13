@@ -16,9 +16,11 @@ class DishServices:
             dish_info
     ):
         if current_user.rol != "propietario":
-            raise InvalidRequest(status_code=401, detail="No tiene permisos para crear un plato")
+            raise InvalidRequest(
+                status_code=401, detail="No tiene permisos para crear un plato")
 
-        new_dish = FullDish(**dish_info.dict(), idRestaurante=current_user.idUsuario)
+        new_dish = FullDish(**dish_info.dict(),
+                            idRestaurante=current_user.idUsuario)
 
         await self.dish_repository.new_dish(new_dish)
 
@@ -26,7 +28,8 @@ class DishServices:
 
     async def get_all_dishes(self, user):
         if user.rol != "propietario":
-            raise InvalidRequest(status_code=401, detail="No tiene permisos para ver los platos")
+            raise InvalidRequest(
+                status_code=401, detail="No tiene permisos para ver los platos")
 
         all_dishes = await self.dish_repository.get_all_dishes(user.idUsuario)
 
@@ -36,14 +39,16 @@ class DishServices:
 
     async def update_dish(self, current_user, dish_id, dish_info):
         if current_user.rol != "propietario":
-            raise InvalidRequest(status_code=401, detail="No tiene permisos para actualizar un plato")
+            raise InvalidRequest(
+                status_code=401, detail="No tiene permisos para actualizar un plato")
 
         dish = await self.dish_repository.get_dish_by_id(dish_id)
 
         if not dish:
             raise InvalidRequest(status_code=404, detail="El plato no existe")
         if dish.idRestaurante != current_user.idUsuario:
-            raise InvalidRequest(status_code=401, detail="No tiene permisos para actualizar este plato")
+            raise InvalidRequest(
+                status_code=401, detail="No tiene permisos para actualizar este plato")
 
         dish.Precio = dish_info.Precio
         dish.Descripcion = dish_info.Descripcion
@@ -54,14 +59,16 @@ class DishServices:
 
     async def enable_dish(self, current_user, dish_id):
         if current_user.rol != "propietario":
-            raise InvalidRequest(status_code=401, detail="No tiene permisos para habilitar un plato")
+            raise InvalidRequest(
+                status_code=401, detail="No tiene permisos para habilitar un plato")
 
         dish = await self.dish_repository.get_dish_by_id(dish_id)
 
         if not dish:
             raise InvalidRequest(status_code=404, detail="El plato no existe")
         if dish.idRestaurante != current_user.idUsuario:
-            raise InvalidRequest(status_code=401, detail="No tiene permisos para habilitar este plato")
+            raise InvalidRequest(
+                status_code=401, detail="No tiene permisos para habilitar este plato")
 
         if dish.estado:
             dish.estado = False

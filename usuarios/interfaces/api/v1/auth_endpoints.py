@@ -33,7 +33,6 @@ async def generate_token(
         password=form_data.password
     )
     if not user:
-        raise InvalidRequest(status_code=401, detail='Invalid username or password')
+        raise InvalidRequest(
+            status_code=401, detail='Invalid username or password')
     return auth_services.create_token(user)
-
-
