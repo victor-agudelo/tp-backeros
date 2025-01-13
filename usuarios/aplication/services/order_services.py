@@ -27,7 +27,7 @@ class OrderServices:
                 "page_size": page_size
             }
 
-            headers={"accept": "application/json"}
+            headers = {"accept": "application/json"}
 
             async with httpx.AsyncClient() as client:
                 response = await client.get(FULL_URL, params=params, headers=headers)
@@ -42,7 +42,8 @@ class OrderServices:
             return final_response
 
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error al obtener los pedidos: {e}")
+            raise InvalidRequest(
+                status_code=500, detail=f"Error al obtener los pedidos: {e}")
 
     async def patch_active_order(self, pedido_id, user):
         try:
@@ -67,7 +68,8 @@ class OrderServices:
             return response.text
 
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error al realizar la conexion: {e}")
+            raise InvalidRequest(
+                status_code=500, detail=f"Error al realizar la conexion: {e}")
 
     async def finish_order(self, pedido_id):
         try:
@@ -91,12 +93,13 @@ class OrderServices:
             await self.__assign_deliver_code(response_json.get("pedido_id"), receipt_code)
 
             message = MessageCreator(response_json, receipt_code)
-            #sender = MessageSender(...).send_message()
+            # sender = MessageSender(...).send_message()
 
-            return "Message sent" #sender
+            return "Message sent"  # sender
 
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error al realizar la conexion: {e}")
+            raise InvalidRequest(
+                status_code=500, detail=f"Error al realizar la conexion: {e}")
 
     async def deliver_order(self, pedido_id, code):
         try:
@@ -121,8 +124,8 @@ class OrderServices:
             return response.text
 
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error al realizar la conexion: {e}")
-
+            raise InvalidRequest(
+                status_code=500, detail=f"Error al realizar la conexion: {e}")
 
     async def __assign_deliver_code(self, order_id, code):
         try:
@@ -144,4 +147,5 @@ class OrderServices:
 
             return response.text
         except httpx.RequestError as e:
-            raise InvalidRequest(status_code=500, detail=f"Error al realizar la conexion: {e}")
+            raise InvalidRequest(
+                status_code=500, detail=f"Error al realizar la conexion: {e}")

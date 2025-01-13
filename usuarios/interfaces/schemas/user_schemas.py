@@ -85,7 +85,3 @@ class UserCreation(FullUser):
     def password_encrypted(self):
         self.claveEncriptada = passlib.hash.bcrypt.hash(self.claveEncriptada)
         return self
-
-
-
-

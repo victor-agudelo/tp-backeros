@@ -27,5 +27,3 @@ class DishResponse(FullDish):
 class DishPatch(BaseModel):
     Precio: int | None
     Descripcion: str | None
-
-

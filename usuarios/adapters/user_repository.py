@@ -22,7 +22,6 @@ class UserRepository:
         result = await self.db.execute(stmt)
         return result.scalars().first()
 
-
     async def current_user(self, payload, db: AsyncSession = Depends(get_db_session)):
         stmt = select(Usuario).where(Usuario.correo == payload['correo'])
         result = await db.execute(stmt)

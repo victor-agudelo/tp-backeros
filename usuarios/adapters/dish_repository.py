@@ -32,9 +32,11 @@ class DishRepository:
 
     async def get_active_dishes(self, owner_id, page: int = 1, page_size: int = 10, category=None):
         if category:
-            stmt = select(Platos).where(Platos.idRestaurante == owner_id, Platos.estado == True, Platos.categoria == category).order_by(Platos.Nombre)
+            stmt = select(Platos).where(Platos.idRestaurante == owner_id, Platos.estado ==
+                                        True, Platos.categoria == category).order_by(Platos.Nombre)
         else:
-            stmt = select(Platos).where(Platos.idRestaurante == owner_id, Platos.estado == True).order_by(Platos.Nombre)
+            stmt = select(Platos).where(Platos.idRestaurante ==
+                                        owner_id, Platos.estado == True).order_by(Platos.Nombre)
         return await self.paginator.paginate_query(
             query=stmt,
             page=page,

@@ -59,6 +59,7 @@ async def enable_dish(
     dish_services = DishServices(db)
     return await dish_services.enable_dish(user, idPlato)
 
+
 @dishes_router.get('/platos-activos/{idRestaurante}')
 async def get_active_dishes(
         idRestaurante: int,
@@ -69,4 +70,3 @@ async def get_active_dishes(
 ):
     dish_services = DishServices(db)
     return await dish_services.get_active_dishes(idRestaurante, page, page_size, category)
-

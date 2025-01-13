@@ -1,8 +1,10 @@
 from datetime import datetime
 
+
 class MessageCreator:
     def __init__(self, message, code):
-        self.pedido_finalizado = datetime.strptime(message.get('pedidoListoTimestamp'), "%Y-%m-%dT%H:%M:%S.%f").strftime("%Y-%m-%d %H:%M:%S")
+        self.pedido_finalizado = datetime.strptime(message.get(
+            'pedidoListoTimestamp'), "%Y-%m-%dT%H:%M:%S.%f").strftime("%Y-%m-%d %H:%M:%S")
         self.pedido_id = message.get("pedido_id")[-4:]
         self.code = code
 
